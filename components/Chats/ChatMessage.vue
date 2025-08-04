@@ -22,12 +22,32 @@
         
         <!-- Message bubble với background khác nhau cho AI và User -->
         <div 
-          class="rounded-2xl px-4 py-3 shadow-sm max-w-full break-words"
+          class="relative rounded-2xl px-4 py-3 shadow-sm max-w-full break-words cursor-pointer"
           :class="messageStyle"
+          @click="copyMessage"
+          @mouseenter="hovered = true"
+          @mouseleave="hovered = false"
         >
           <p class="text-sm leading-relaxed whitespace-pre-wrap" :class="textColor">
             {{ message }}
           </p>
+          <!-- Hiển thị hướng dẫn hoặc đã copy -->
+          <transition name="fade">
+            <span
+              v-if="hovered && !copied"
+              class="absolute bottom-1 right-3 text-xs text-gray-900 opacity-80 pointer-events-none select-none"
+            >
+              Ấn để copy
+            </span>
+          </transition>
+          <transition name="fade">
+            <span
+              v-if="copied"
+              class="absolute bottom-1 right-3 text-xs text-gray-900 font-semibold opacity-90 pointer-events-none select-none"
+            >
+              Đã copy!
+            </span>
+          </transition>
         </div>
       </div>
     </div>
@@ -35,7 +55,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // Props nhận từ component cha
 const props = defineProps({
@@ -48,6 +68,8 @@ const props = defineProps({
     required: true
   }
 })
+const hovered = ref(false)
+const copied = ref(false)
 
 // Computed style cho message bubble - AI có background trắng, User có background hồng
 const messageStyle = computed(() => {
@@ -63,15 +85,19 @@ const textColor = computed(() => {
   return props.user === 'User' ? 'text-white' : 'text-gray-800'
 })
 
-// Hàm lấy thời gian hiện tại để hiển thị timestamp
-const getCurrentTime = () => {
-  return new Date().toLocaleTimeString('vi-VN', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
-  })
+// Hàm copy message vào clipboard
+const copyMessage = () => {
+  navigator.clipboard.writeText(props.message)
+  copied.value = true
+  setTimeout(() => copied.value = false, 1200)
 }
 </script>
 
 <style scoped>
-/* Không cần animation theo yêu cầu, chỉ giữ style cơ bản */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
 </style>
