@@ -5,7 +5,9 @@
 <script setup>
 import MessageList from '../../components/Chats/ChatListmessage.vue'
 import { useRoute } from 'vue-router'
+import { useAuthGuard } from '../../composables/useAuthGuard.js'
 
-const route = useRoute()
-const chatId = route.params.id
+useAuthGuard();
+const route = useRoute();
+const chatId = route.params.id;
 </script>

@@ -82,8 +82,8 @@
 <script setup> 
 import { ref, onMounted, nextTick, watch } from 'vue' 
 import ChatMessage from '../components/Chats/ChatMessage.vue' 
-import { getMessageByChatId, sendMessage } from '../server/message.ts'
-import { createChat } from '../server/chat'
+import { getMessageByChatId, sendMessage } from '../../composables/message.ts'
+import { createChat } from '../../composables/chat.ts'
 import PageAddPDF from '../PageAddPDF.vue'
 
 const messages = ref([]) 

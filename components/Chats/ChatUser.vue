@@ -14,9 +14,12 @@
           </div>
           
           <!-- Thông tin user -->
-          <div class="flex-1 text-left">
-            <div class="text-sm font-semibold text-gray-800">Người dùng</div>
-            <div class="text-xs text-gray-500">user@example.com</div>
+          <div v-if="userInfo">
+            <div class="text-sm font-semibold text-gray-800 text-start">{{ userInfo.name || "Người dùng" }}</div>
+            <div class="text-xs text-gray-500">{{ userInfo.email || "" }}</div>
+          </div>
+          <div v-else>
+            <div class="text-sm text-gray-400">Đang tải...</div>
           </div>
           
           <!-- Icon dropdown -->
@@ -70,13 +73,24 @@
     </div>
 </template>
 <script setup>
-import { logout } from '../../server/auth.js'
+import { logout } from '../../composables/auth.js'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { getUserInfo  } from '../../composables/useAuthGuard.js'
 
 // State cho user menu dropdown
 const showUserMenu = ref(false)
 const dropdownRef = ref(null)
+const userInfo = ref(null)
 
+const loadUserInfo = async () => {
+  try {
+    const data = await getUserInfo()
+    console.log(data);    
+    userInfo.value = data
+  } catch (err) {
+    userInfo.value = null
+  }
+}
 
 // Function để toggle user menu
 const toggleUserMenu = () => {
@@ -98,9 +112,10 @@ function handleClickOutside(event) {
   }
 }
 onMounted(() => {
-  document.addEventListener('mousedown', handleClickOutside)
+  loadUserInfo();
+  document.addEventListener('mousedown', handleClickOutside);
 })
 onBeforeUnmount(() => {
-  document.removeEventListener('mousedown', handleClickOutside)
+  document.removeEventListener('mousedown', handleClickOutside);
 })
 </script>

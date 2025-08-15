@@ -27,7 +27,7 @@
 <script setup>
 import { ref } from 'vue'
 import { navigateTo } from '#imports'
-import { login } from '../../server/auth.ts'
+import { login } from '../../composables/auth.ts'
 
 definePageMeta({
   layout: false
@@ -47,6 +47,6 @@ const handleLogin = async () => {
 
 const handleLoginWithGoogle = async (e) => {
   e.preventDefault()
-  window.location.href = 'https://localhost:7222/api/Auth/loginGoogle?returnUrl=http://localhost:3000'
+  window.location.href = 'https://localhost:7043/api/Auth/loginGoogle?returnUrl=http://localhost:3000'
 }
 </script> 

@@ -51,7 +51,7 @@
 import { ref, onMounted } from 'vue'
 import ChatItem from './ChatItem.vue'
 import ChatUser from './ChatUser.vue'
-import { countChats } from '../../server/chat.js'
+import { countChats } from '../../composables/chat.js'
 
 const totalChats = ref(0)
 

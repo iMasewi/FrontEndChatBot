@@ -46,7 +46,7 @@
 <script setup>
 import { ref } from 'vue'
 import { navigateTo } from '#imports'
-import { register } from '../../server/auth.ts'
+import { register } from '../../composables/auth.ts'
 
 definePageMeta({
   layout: false
