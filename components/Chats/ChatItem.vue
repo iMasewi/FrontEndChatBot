@@ -3,7 +3,6 @@
         v-for="(chat, index) in conversations"
         :key="index"
         class="group cursor-pointer hover:bg-white/70 backdrop-blur-sm rounded-xl transition-all duration-200 hover:shadow-md"
-        @click="selectConversation(chat)"
     >
         <NuxtLink :to="`/chat/${chat.id}`" class=" rounded-xl border border-white/50">
             <div class="flex items-start gap-3">
@@ -20,13 +19,13 @@
                     <div class="text-[16px] font-semibold text-gray-800">
                     Cuộc hội thoại {{ index + 1 }}
                     </div>
-                    <!-- Thời gian (giả lập) -->
+                    <!-- Thời gian -->
                     <div class="text-xs text-gray-400">
                         {{ getTimeAgo(chat.createdAt) }}
                     </div>
                 </div>
               
-                <!-- Message preview với icon -->
+                <!-- Message với icon -->
                 <div class="flex items-center gap-2">
                     <IconAvatarChat 
                         svgClass="w-3 h-3 text-gray-400 flex-shrink-0"
@@ -57,9 +56,5 @@ onMounted(async () => {
   console.log('Conversations:', conversations.value);
 });
 
-// Xử lý khi ấn vào chat
-const selectConversation = (chat) => {
-  
-}
 </script>
 
