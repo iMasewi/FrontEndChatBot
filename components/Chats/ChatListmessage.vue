@@ -4,9 +4,7 @@
     <div class="p-6 bg-white/80 backdrop-blur-sm shadow-lg border-b border-pink-100 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center shadow-md">
-          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-          </svg>
+          <IconAvatarChat svgClass="w-7 h-7 text-white" />
         </div>
         <div>
           <h1 class="text-3xl font-bold text-gray-800 mb-1">Chat Bot</h1>
@@ -17,9 +15,9 @@
         @click="showAddPDF = true"
         class="flex items-center gap-2 px-4 py-2 bg-pink-400 hover:bg-pink-500 rounded-lg shadow transition text-gray-700 font-medium"
       >
-        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 4h6a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-        </svg>
+        <IconFilePDF
+          svgClass="w-5 h-5 text-gray-500"
+        />
         PDF AI Assistant
       </button>
     </div>
@@ -57,9 +55,9 @@
             class="w-full border-2 border-gray-200 p-4 pr-12 rounded-2xl outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition-all duration-200 text-gray-800 placeholder-gray-500 bg-white shadow-sm disabled:opacity-50"
             placeholder="Nhập tin nhắn của bạn..."
           />
-          <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012 2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
-          </svg>
+          <IconSendMessage
+            svgClass="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+          />
         </div>
         
         <button
@@ -67,9 +65,9 @@
           :disabled="isLoading || !newMessage.trim()"
           class="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-6 py-4 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-          </svg>
+          <IconSending
+            svgClass="w-5 h-5 text-gray-400"
+          />
           <span>{{ isLoading ? 'Đang gửi...' : 'Gửi' }}</span>
         </button>
       </div>
@@ -85,6 +83,10 @@ import ChatMessage from '../components/Chats/ChatMessage.vue'
 import { getMessageByChatId, sendMessage } from '../../composables/message.ts'
 import { createChat } from '../../composables/chat.ts'
 import PageAddPDF from '../PageAddPDF.vue'
+import IconAvatarChat from '../icons/IconAvatarChat.vue';
+import IconFilePDF from '../icons/IconFilePDF.vue'
+import IconSendMessage from '../icons/IconSendMessage.vue'
+import IconSending from '../icons/IconSending.vue'
 
 const messages = ref([]) 
 const newMessage = ref('') 
@@ -130,7 +132,7 @@ const scrollToBottom = async () => {
   }
 }
 
-// Gửi tin nhắn - tối ưu logic
+// Gửi tin nhắn
 const sendMessageWithContent = async (content, currentChatId) => {
   newMessage.value = ''
 

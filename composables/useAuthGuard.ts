@@ -1,5 +1,4 @@
 import { useRouter } from 'vue-router'
-import { TokenStorage } from '../utils/tokenStorage';
 
 export const useAuthGuard = () => {
   const router = useRouter()

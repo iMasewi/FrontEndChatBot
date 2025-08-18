@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useRuntimeConfig } from '#app';
-import { TokenStorage } from '../utils/tokenStorage';
 
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
@@ -11,9 +10,9 @@ export default defineNuxtPlugin(() => {
 
   api.interceptors.request.use((request) => {
     if (process.client) {
-      const token = TokenStorage.getBearerToken();
+      const token = localStorage.getItem('token');
       if (token) {
-        request.headers.Authorization = token;
+        request.headers.Authorization = `Bearer ${token}`;
       }
     }
     return request;

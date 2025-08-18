@@ -8,9 +8,9 @@
         >
           <!-- Avatar người dùng -->
           <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center shadow-md flex-shrink-0">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
+            <IconAvataUser
+              svgClass="w-6 h-6 text-white"
+            />
           </div>
           
           <!-- Thông tin user -->
@@ -23,15 +23,10 @@
           </div>
           
           <!-- Icon dropdown -->
-          <svg 
-            class="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-transform duration-200"
-            :class="{ 'rotate-180': showUserMenu }"
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <IconDropdown
+            svgClass="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-transform duration-200"
+            :showUserMenu="showUserMenu"
+          />
         </button>
 
         <!-- Dropdown Menu -->
@@ -63,9 +58,9 @@
             @click="handleLogout"
             class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-            </svg>
+            <IconLogout 
+              svgClass="w-4 h-4"
+            />
             Đăng xuất
           </button>
         </div>
@@ -76,6 +71,9 @@
 import { logout } from '../../composables/auth.js'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { getUserInfo  } from '../../composables/useAuthGuard.js'
+import IconAvataUser from '../icons/IconAvataUser.vue'
+import IconLogout from '../icons/IconLogout.vue'
+import IconDropdown from '../icons/IconDropdown.vue'
 
 // State cho user menu dropdown
 const showUserMenu = ref(false)

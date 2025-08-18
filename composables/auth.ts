@@ -1,5 +1,3 @@
-import { TokenStorage } from '../utils/tokenStorage';
-
 export const login = async (email: string, password: string) => {
     try {
         const { $api } = useNuxtApp();
@@ -10,7 +8,7 @@ export const login = async (email: string, password: string) => {
         if (!response.data) {
             throw new Error('Login failed');
         }
-        TokenStorage.setToken(response.data.token);
+        localStorage.setItem('token', response.data.token);
         console.log('Login successful:', response.data);
         return true;
     } catch (error) {
@@ -41,7 +39,7 @@ export const register = async (name: string, email: string, password: string) =>
 
 export const logout = () => {
     try{
-        TokenStorage.removeToken();
+        localStorage.removeItem('token');
         return true;
     } catch (error) {
         console.error('Error during logout:', error);

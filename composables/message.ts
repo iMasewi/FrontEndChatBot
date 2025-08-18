@@ -1,5 +1,3 @@
-import { TokenStorage } from '../utils/tokenStorage';
-
 export const getMessageByChatId = async (chatId: string) => {
     try {
         const { $api } = useNuxtApp();

@@ -3,14 +3,14 @@
     <div class="flex items-start gap-3 max-w-[75%]" :class="user === 'User' ? 'flex-row-reverse' : 'flex-row'">
       <div class="flex-shrink-0">
         <div v-if="user === 'AI'" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center shadow-md">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-          </svg>
+          <IconAvataAI
+            svgClass="w-6 h-6 text-white"
+          />
         </div>
         <div v-else class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center shadow-md">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-          </svg>
+          <IconAvataUser
+            svgClass="w-6 h-6 text-white"
+          />
         </div>
       </div>
 
@@ -56,6 +56,8 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import IconAvataUser from '../icons/IconAvataUser.vue'
+import IconAvataAI from '../icons/IconAvataAI.vue'
 
 // Props nhận từ component cha
 const props = defineProps({
