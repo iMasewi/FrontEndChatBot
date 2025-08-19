@@ -36,8 +36,8 @@
       <ChatMessage
         v-for="(msg, index) in messages"
         :key="index"
-        :user="msg.user"
-        :message="msg.content"
+        :message="msg"
+        @update-message="editMessage"
       />
     </div>
 
@@ -80,7 +80,7 @@
 <script setup> 
 import { ref, onMounted, nextTick, watch } from 'vue' 
 import ChatMessage from '../components/Chats/ChatMessage.vue' 
-import { getMessageByChatId, sendMessage } from '../../composables/message.ts'
+import { getMessageByChatId, sendMessage, updateMessage } from '../../composables/message.ts'
 import { createChat } from '../../composables/chat.ts'
 import PageAddPDF from '../PageAddPDF.vue'
 import IconAvatarChat from '../icons/IconAvatarChat.vue';
@@ -88,11 +88,11 @@ import IconFilePDF from '../icons/IconFilePDF.vue'
 import IconSendMessage from '../icons/IconSendMessage.vue'
 import IconSending from '../icons/IconSending.vue'
 
-const messages = ref([]) 
-const newMessage = ref('') 
-const messageContainer = ref(null) 
-const isLoading = ref(false)
-const showAddPDF = ref(false)
+const messages = ref([]);
+const newMessage = ref('');
+const messageContainer = ref(null);
+const isLoading = ref(false);
+const showAddPDF = ref(false);
 
 const props = defineProps({
   chatId: {
@@ -102,106 +102,116 @@ const props = defineProps({
 })
 
 // Sử dụng computed hoặc watch thay vì ref reactive
-const chatId = ref(Number(props.chatId))
+const chatId = ref(Number(props.chatId));
 
 // Watch để cập nhật chatId khi props thay đổi
 watch(() => props.chatId, (newChatId) => {
-  chatId.value = Number(newChatId)
-  loadMessages()
+  chatId.value = Number(newChatId);
+  loadMessages();
 }, { immediate: false })
 
 // Tách logic load messages
 const loadMessages = async () => {
   try {
-    const data = await getMessageByChatId(chatId.value)
-    messages.value = data
+    const data = await getMessageByChatId(chatId.value);
+    messages.value = data;
   } catch (error) {
-    console.error('Lỗi khi tải tin nhắn:', error)
+    console.error('Lỗi khi tải tin nhắn:', error);
   }
 }
 
 onMounted(() => {
-  loadMessages()
+  loadMessages();
 }) 
 
 // Hàm cuộn xuống cuối
 const scrollToBottom = async () => {
-  await nextTick()
+  await nextTick();
   if (messageContainer.value) {
-    messageContainer.value.scrollTop = messageContainer.value.scrollHeight
+    messageContainer.value.scrollTop = messageContainer.value.scrollHeight;
   }
 }
 
 // Gửi tin nhắn
 const sendMessageWithContent = async (content, currentChatId) => {
-  newMessage.value = ''
+  newMessage.value = '';
 
   messages.value.push({ 
     user: 'User', 
     content: content
-  })
+  });
   
-  await scrollToBottom()
+  await scrollToBottom();
 
   // Gọi API
-  const data = await sendMessage(currentChatId, content)
+  const data = await sendMessage(currentChatId, content);
 
   // Thêm phản hồi AI
   messages.value.push({ 
     user: 'AI', 
     content: data.content
-  })
+  });
   
   await scrollToBottom()
 }
 
 const submitMessage = async () => { 
-  if (isLoading.value || !newMessage.value.trim()) return
-  isLoading.value = true
+  if (isLoading.value || !newMessage.value.trim()) return;
+  isLoading.value = true;
   
   try {
     if (chatId.value !== 0) {
       // Chat đã tồn tại
-      await sendMessageWithContent(newMessage.value.trim(), chatId.value)
+      await sendMessageWithContent(newMessage.value.trim(), chatId.value);
     } else {
       // Chat mới
-      const newChat = await createChat(newMessage.value.trim())
-      chatId.value = Number(newChat.conversationId)
+      const newChat = await createChat(newMessage.value.trim());
+      chatId.value = Number(newChat.conversationId);
         
-      await sendMessageWithContent(newMessage.value.trim(), chatId.value)
+      await sendMessageWithContent(newMessage.value.trim(), chatId.value);
 
-      await navigateTo(`/chat/${chatId.value}`)
+      await navigateTo(`/chat/${chatId.value}`);
     }
   } catch (error) {
-    console.error('Lỗi khi submit:', error)
+    console.error('Lỗi khi submit:', error);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
+  }
+}
+
+// Update message
+const editMessage = async (data) => {
+  const { message, newContent } = data;
+  const response = await updateMessage(message.id, chatId.value, newContent);
+  console.log(response);
+  
+  if (response) {
+    // Tìm và sửa trực tiếp trong mảng messages
+    const idx = messages.value.findIndex(msg => msg.id === message.id);
+    console.log('Index to update:', idx);
+    if (idx !== -1) {
+      messages.value.splice(idx);
+      messages.value.push({
+        user: 'User',
+        content: newContent
+      });
+      
+      await scrollToBottom();
+
+      // Thêm phản hồi AI
+      messages.value.push({
+        user: 'AI',
+        content: response
+      });
+
+      await scrollToBottom();
+    }
   }
 }
 
 // Watch messages để auto scroll
 watch(messages, () => {
-  scrollToBottom()
+  scrollToBottom();
 }, { deep: true })
 
 </script>
-
-<style scoped>
-.custom-scroll::-webkit-scrollbar {
-  width: 8px;
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
-}
-</style>

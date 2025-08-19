@@ -45,3 +45,22 @@ export const deleteMessage = async (messageId: string) => {
         return false;
     }
 }
+
+export const updateMessage = async (messageId: string, chatId: number, newContent: string) => {
+    try {
+        const { $api } = useNuxtApp();
+
+        const response = await $api.put(`/Message`, {
+            id: messageId,
+            conversationId: chatId,
+            content: newContent
+        });
+        if (!response.data) {
+            throw new Error('Failed to update message');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Error updating message:', error);
+        return null;
+    }
+}

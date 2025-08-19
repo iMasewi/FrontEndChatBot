@@ -53,39 +53,14 @@ import ChatItem from './ChatItem.vue'
 import ChatUser from './ChatUser.vue'
 import { countChats } from '../../composables/chat.js'
 
-const totalChats = ref(0)
+const totalChats = ref(0);
 
 onMounted(async () => {
-  totalChats.value = await countChats()
+  totalChats.value = await countChats();
 })
 
 const createConversation = async () => {
-  await navigateTo('/')
+  await navigateTo('/');
 }
 
 </script>
-
-<style scoped>
-/* Custom scrollbar để match với main chat */
-.custom-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: rgba(219, 39, 119, 0.3);
-  border-radius: 3px;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(219, 39, 119, 0.5);
-}
-
-/* Thêm màu pink-150 tự định nghĩa */
-.from-pink-150 {
-  --tw-gradient-from: rgb(252 231 243);
-}
-</style>

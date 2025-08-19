@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+/* Custom scrollbar cho textarea */
+textarea::-webkit-scrollbar {
+  width: 4px;
+}
+textarea::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+textarea::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(219, 39, 119, 0.3);
+  border-radius: 3px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(219, 39, 119, 0.5);
+}
+
+/* Thêm màu pink-150 tự định nghĩa */
+.from-pink-150 {
+  --tw-gradient-from: rgb(252 231 243);
+}
