@@ -76,15 +76,15 @@ import IconLogout from '../icons/IconLogout.vue'
 import IconDropdown from '../icons/IconDropdown.vue'
 
 // State cho user menu dropdown
-const showUserMenu = ref(false)
-const dropdownRef = ref(null)
-const userInfo = ref(null)
+const showUserMenu = ref(false);
+const dropdownRef = ref(null);
+const userInfo = ref(null);
 
 const loadUserInfo = async () => {
   try {
-    const data = await getUserInfo()
+    const data = await getUserInfo();
     console.log(data);    
-    userInfo.value = data
+    userInfo.value = data;
   } catch (err) {
     userInfo.value = null
   }
@@ -92,21 +92,21 @@ const loadUserInfo = async () => {
 
 // Function để toggle user menu
 const toggleUserMenu = () => {
-  showUserMenu.value = !showUserMenu.value
+  showUserMenu.value = !showUserMenu.value;
 }
 
 // Function xử lý đăng xuất
 const handleLogout = async () => {
   // Đóng menu trước
-  showUserMenu.value = false
-  logout()
-  navigateTo('/login')
+  showUserMenu.value = false;
+  logout();
+  navigateTo('/login');
 }
 
 // Đóng menu khi click bên ngoài (optional)
 function handleClickOutside(event) {
   if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
-    showUserMenu.value = false
+    showUserMenu.value = false;
   }
 }
 onMounted(() => {

@@ -87,6 +87,7 @@ import IconAvatarChat from '../icons/IconAvatarChat.vue';
 import IconFilePDF from '../icons/IconFilePDF.vue'
 import IconSendMessage from '../icons/IconSendMessage.vue'
 import IconSending from '../icons/IconSending.vue'
+import { emitter } from '../../composables/eventBus.ts'
 
 const messages = ref([]);
 const newMessage = ref('');
@@ -166,11 +167,15 @@ const submitMessage = async () => {
     } else {
       // Chat mới
       const newChat = await createChat(newMessage.value.trim());
-      chatId.value = Number(newChat.conversationId);
+      chatId.value = Number(newChat.id);
         
       await sendMessageWithContent(newMessage.value.trim(), chatId.value);
 
       await navigateTo(`/chat/${chatId.value}`);
+
+      emitter.emit('chat-created', {
+        chat: newChat,
+      });
     }
   } catch (error) {
     console.error('Lỗi khi submit:', error);

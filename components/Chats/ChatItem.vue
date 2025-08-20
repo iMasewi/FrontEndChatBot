@@ -47,6 +47,7 @@ import { getChatHistory } from '../../composables/chat.js'
 import { NuxtLink } from '#components';
 import IconAvatarChat from '../icons/IconAvatarChat.vue';
 import { getTimeAgo } from '../../utils/dateTimeAgo.js';
+import { emitter } from '../../composables/eventBus.ts';
 
 const conversations = ref([])
 
@@ -56,5 +57,13 @@ onMounted(async () => {
   console.log('Conversations:', conversations.value);
 });
 
+const addChat = (newChat) => {
+    console.log(newChat);
+    conversations.value.unshift(newChat);
+}
+
+emitter.on('chat-created', (data) => {
+  addChat(data.chat);
+});
 </script>
 
