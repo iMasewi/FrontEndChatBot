@@ -187,31 +187,30 @@ const submitMessage = async () => {
 // Update message
 const editMessage = async (data) => {
   const { message, newContent } = data;
-  const response = await updateMessage(message.id, chatId.value, newContent);
-  console.log(response);
   
-  if (response) {
-    // Tìm và sửa trực tiếp trong mảng messages
-    const idx = messages.value.findIndex(msg => msg.id === message.id);
-    console.log('Index to update:', idx);
-    if (idx !== -1) {
-      messages.value.splice(idx);
-      messages.value.push({
-        user: 'User',
-        content: newContent
-      });
-      
-      await scrollToBottom();
+  // Tìm và sửa trực tiếp trong mảng messages
+  const idx = messages.value.findIndex(msg => msg.id === message.id);
+  console.log('Index to update:', idx);
+  if (idx !== -1) {
+    messages.value.splice(idx);
+    messages.value.push({
+      user: 'User',
+      content: newContent
+    });
+    
+    await scrollToBottom();
+    
+    const response = await updateMessage(message.id, chatId.value, newContent);
 
-      // Thêm phản hồi AI
-      messages.value.push({
-        user: 'AI',
-        content: response
-      });
+    // Thêm phản hồi AI
+    messages.value.push({
+      user: 'AI',
+      content: response
+    });
 
-      await scrollToBottom();
-    }
+    await scrollToBottom();
   }
+
 }
 
 // Watch messages để auto scroll
